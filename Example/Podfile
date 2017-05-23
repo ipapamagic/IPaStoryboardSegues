@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'IPaStoryboardSegues_Example' do
+  pod 'IPaStoryboardSegues', :path => '../'
+
+  target 'IPaStoryboardSegues_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

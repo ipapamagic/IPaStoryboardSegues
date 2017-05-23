@@ -1,0 +1,16 @@
+PODS:
+  - IPaStoryboardSegues (0.1.0)
+
+DEPENDENCIES:
+  - IPaStoryboardSegues (from `../`)
+
+EXTERNAL SOURCES:
+  IPaStoryboardSegues:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  IPaStoryboardSegues: d4c3b1db680cc3e8b77ab72edcdccadf7ba61760
+
+PODFILE CHECKSUM: 53f6e5a0e5c9e9b5893e658d0271398564fa5ade
+
+COCOAPODS: 1.2.1
