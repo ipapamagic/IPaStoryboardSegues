@@ -8,8 +8,8 @@
 
 import UIKit
 
-class IPaReplaceSegue: UIStoryboardSegue {
-    override func perform() {
+open class IPaReplaceSegue: UIStoryboardSegue {
+    override open func perform() {
         if let navigationController = self.source.navigationController {
             if let index = navigationController.viewControllers.index(where: {
                 viewController in

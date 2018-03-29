@@ -8,8 +8,8 @@
 
 import UIKit
 
-class IPaReplaceRootSegue: UIStoryboardSegue {
-    override func perform() {
+open class IPaReplaceRootSegue: UIStoryboardSegue {
+    override open func perform() {
         guard let window = UIApplication.shared.delegate?.window else {
             return
         }
