@@ -6,19 +6,19 @@
 //
 
 import UIKit
-public protocol IPaContainerProtocol  {
+public protocol IPaViewContainerProtocol  {
     var currentViewController:UIViewController? {get set}
     var containerView:UIView! {get set}
 }
 
 open class IPaContainerGotoSegue: UIStoryboardSegue {
-    var baseViewController:(IPaContainerProtocol & UIViewController)? {
+    var baseViewController:(IPaViewContainerProtocol & UIViewController)? {
         get {
             var source:UIViewController? = self.source
-            while source != nil && !(source is IPaContainerProtocol) {
+            while source != nil && !(source is IPaViewContainerProtocol) {
                 source = source?.parent
             }
-            return source as? UIViewController & IPaContainerProtocol
+            return source as? UIViewController & IPaViewContainerProtocol
         }
     }
     override open func perform()
