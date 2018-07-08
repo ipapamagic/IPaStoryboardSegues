@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'IPaStoryboardSegues'
-  s.version          = '2.3'
+  s.version          = '2.2'
   s.summary          = 'A short description of IPaStoryboardSegues.'
   s.swift_version    = '4.1'
 # This description is used to generate tags and improve search results.
