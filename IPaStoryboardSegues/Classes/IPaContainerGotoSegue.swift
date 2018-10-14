@@ -23,24 +23,25 @@ open class IPaContainerGotoSegue: UIStoryboardSegue {
     }
     override open func perform()
     {
-        guard var source = baseViewController else {
+        let destination = self.destination
+        guard var source = baseViewController , source.currentViewController != destination else {
             return
         }
         if let leavingController = source.currentViewController {
-            leavingController.willMove(toParentViewController: nil)
+            leavingController.willMove(toParent: nil)
             leavingController.view.removeFromSuperview()
-            leavingController.removeFromParentViewController()
+            leavingController.removeFromParent()
             
         }
-        let destination = self.destination
+        
         source.currentViewController = destination
-        source.addChildViewController(destination)
+        source.addChild(destination)
         destination.view.translatesAutoresizingMaskIntoConstraints = false
         let viewsDict:[String:UIView] = ["destView": destination.view]
         
         source.containerView.addSubview(destination.view)
-        source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[destView]|",options:NSLayoutFormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-        source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[destView]|",options:NSLayoutFormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-        destination.didMove(toParentViewController: source)
+        source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        destination.didMove(toParent: source)
     }
 }
