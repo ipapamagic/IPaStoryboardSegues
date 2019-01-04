@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import IPaStoryboardSegues
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
