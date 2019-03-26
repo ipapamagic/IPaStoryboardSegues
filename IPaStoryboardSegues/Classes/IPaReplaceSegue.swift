@@ -11,7 +11,7 @@ import UIKit
 open class IPaReplaceSegue: UIStoryboardSegue {
     override open func perform() {
         if let navigationController = self.source.navigationController {
-            if let index = navigationController.viewControllers.index(where: {
+            if let index = navigationController.viewControllers.firstIndex(where: {
                 viewController in
                 return (viewController == self.source)
             }) {
