@@ -9,6 +9,7 @@ import UIKit
 public protocol IPaViewContainerProtocol  {
     var currentViewController:UIViewController? {get set}
     var containerView:UIView! {get set}
+    var viewControllers:[String:UIViewController]! {get set}
 }
 
 open class IPaContainerGotoSegue: UIStoryboardSegue {
@@ -43,5 +44,8 @@ open class IPaContainerGotoSegue: UIStoryboardSegue {
         source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         destination.didMove(toParent: source)
+        if let identifier = identifier {
+            source.viewControllers[identifier] = destination
+        }
     }
 }

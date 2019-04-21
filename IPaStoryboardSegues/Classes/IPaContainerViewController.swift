@@ -8,11 +8,13 @@
 import UIKit
 
 open class IPaContainerViewController: UIViewController ,IPaViewContainerProtocol{
+    public var viewControllers: [String : UIViewController]! = [String:UIViewController]()
+    
     public var currentViewController: UIViewController?
     
     @IBOutlet public weak var containerView: UIView!
     
-
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +28,13 @@ open class IPaContainerViewController: UIViewController ,IPaViewContainerProtoco
         
         segue.perform()
     }
-
+    override open func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if let viewController = self.viewControllers[identifier] {
+            self.gotoView(identifier, viewController: viewController)
+            return false
+        }
+        return true
+    }
     /*
     // MARK: - Navigation
 
