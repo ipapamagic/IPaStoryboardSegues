@@ -10,7 +10,7 @@ import UIKit
 open class IPaContainerViewController: UIViewController ,IPaViewContainerProtocol{
     public var viewControllers: [String : UIViewController]! = [String:UIViewController]()
     
-    public var currentViewController: UIViewController?
+    open var currentViewController: UIViewController?
     
     @IBOutlet public weak var containerView: UIView!
     

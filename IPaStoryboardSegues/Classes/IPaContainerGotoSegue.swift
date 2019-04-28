@@ -34,7 +34,9 @@ open class IPaContainerGotoSegue: UIStoryboardSegue {
             leavingController.removeFromParent()
             
         }
-        
+        if let identifier = identifier {
+            source.viewControllers[identifier] = destination
+        }
         source.currentViewController = destination
         source.addChild(destination)
         destination.view.translatesAutoresizingMaskIntoConstraints = false
@@ -44,8 +46,6 @@ open class IPaContainerGotoSegue: UIStoryboardSegue {
         source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         destination.didMove(toParent: source)
-        if let identifier = identifier {
-            source.viewControllers[identifier] = destination
-        }
+        
     }
 }
