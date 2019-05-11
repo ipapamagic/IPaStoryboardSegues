@@ -10,10 +10,25 @@ import UIKit
 
 open class IPaReplaceRootSegue: UIStoryboardSegue {
     override open func perform() {
-        guard let window = UIApplication.shared.delegate?.window else {
+        guard let oWindow = UIApplication.shared.delegate?.window else {
             return
         }
-        window?.rootViewController = self.destination
+        let window = oWindow!
+        guard let oldVC = window.rootViewController else {
+            window.rootViewController = self.destination
+            return;
+        }
+        let snapshot = oldVC.view!
+        snapshot.snapshotView(afterScreenUpdates: true)
+        self.destination.view.addSubview(snapshot)
+        window.rootViewController = self.destination
         
+        UIView.animate(withDuration: 0.5, animations: {
+            snapshot.layer.opacity = 0;
+            snapshot.layer.transform = CATransform3DMakeScale(1.5, 1.5, 1.5);
+        }, completion: {
+            finished in
+            snapshot.removeFromSuperview()
+        })
     }
 }
