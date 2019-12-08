@@ -1,5 +1,5 @@
 PODS:
-  - IPaStoryboardSegues (2.3)
+  - IPaStoryboardSegues (2.6)
 
 DEPENDENCIES:
   - IPaStoryboardSegues (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  IPaStoryboardSegues: 841832d9c6be65b436bd8e464d5d7f2c9bee74e8
+  IPaStoryboardSegues: aa4242bf9702b534558dd5309f0c2501f151ccc9
 
 PODFILE CHECKSUM: cb2bb11d959ee80a3d3ded22cde46ea45c358d92
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.8.3
