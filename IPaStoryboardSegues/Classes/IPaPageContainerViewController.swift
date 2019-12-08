@@ -7,141 +7,141 @@
 
 import UIKit
 
-class IPaPageContainerViewController: UIViewController {
+open class IPaPageContainerViewController: UIViewController {
     @IBOutlet var contentView:UIView!
     var viewControllers: [String : UIViewController]! = [String:UIViewController]()
-    var pageIdList = [String]()
-    lazy var pageController:UIPageViewController = {
-            let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-            pageController.delegate = self
-            pageController.dataSource = self
-            
-            let child:UIViewController = pageController
-            child.willMove(toParent: parent)
-            self.addChild(child)
-            child.view.translatesAutoresizingMaskIntoConstraints = false
-            let viewsDict:[String:UIView] = ["childView": child.view]
-            contentView.addSubview(child.view)
-            
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-            child.didMove(toParent: parent)
-            return pageController
-        }()
-        var currentIdentifier:String? {
-            get {
-                guard let viewController = self.pageController.viewControllers?.first,let identifier = self.getIdentifier(of: viewController) else {
-                    return nil
-                }
-                return identifier
-            }
-        }
-        override func viewDidLoad() {
-            super.viewDidLoad()
-
-            // Do any additional setup after loading the view.
-        }
-        func getIdentifier(of viewController:UIViewController) -> String? {
-            if let entry = self.viewControllers.first(where: { (arg) -> Bool in
-                
-                let (_, v) = arg
-                return v == viewController
-            }) {
-                return entry.key
-            }
-            return nil
-        }
-        func gotoViewController(_ identifier:String) {
-            guard let gotoIndex = self.pageIdList.firstIndex(of: identifier) else {
-                return
-            }
-            var direction = UIPageViewController.NavigationDirection.forward
-            var oldIdentifier = ""
-            if let currentIdentifier = self.currentIdentifier ,let currentIndex = self.pageIdList.firstIndex(of: currentIdentifier) {
-                oldIdentifier = currentIdentifier
-                if gotoIndex > currentIndex {
-                    direction = UIPageViewController.NavigationDirection.forward
-                }
-                else if gotoIndex < currentIndex {
-                    direction = UIPageViewController.NavigationDirection.reverse
-                }
-                else {
-                    return
-                }
-            }
-            let viewController = self.getViewController(identifier)
-            
-            self.pageController.setViewControllers([viewController], direction: direction, animated: true, completion:{
-                finished in
-                self.onGoto(from: oldIdentifier, to: identifier)
-            })
-        }
-        func onGoto(from oldIdentifier:String,to identifier:String) {
-            
-        }
-        func initial(_ viewController:UIViewController, identifier:String) {
-            
-        }
-        func createViewControler(_ identifier:String) -> UIViewController {
-            return (storyboard?.instantiateViewController(withIdentifier: identifier))!
+    open var pageIdList = [String]()
+    open lazy var pageController:UIPageViewController = {
+        let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageController.delegate = self
+        pageController.dataSource = self
         
-        }
-        func getViewController(_ identifier:String) -> UIViewController{
-            if let vc = self.viewControllers[identifier] {
-                return vc
-            }
-            let viewController = createViewControler(identifier)
-            self.initial(viewController,identifier: identifier)
-            
-            self.viewControllers[identifier] = viewController
-            return viewController
-        }
-
-        /*
-        // MARK: - Navigation
-
-        // In a storyboard-based application, you will often want to do a little preparation before navigation
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            // Get the new view controller using segue.destination.
-            // Pass the selected object to the new view controller.
-        }
-        */
-
-    }
-    extension IPaPageContainerViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSource
-    {
-        func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-            if let currentIdentifier = self.currentIdentifier ,let index = self.pageIdList.firstIndex(of: currentIdentifier) ,index > 0 {
-                let afterKey = pageIdList[index - 1]
-                
-                return self.getViewController(afterKey)
-                
-            }
-            return nil
-        }
+        let child:UIViewController = pageController
+        child.willMove(toParent: parent)
+        self.addChild(child)
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        let viewsDict:[String:UIView] = ["childView": child.view]
+        contentView.addSubview(child.view)
         
-        func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-            if let currentIdentifier = self.currentIdentifier ,let index = self.pageIdList.firstIndex(of: currentIdentifier) ,index < self.pageIdList.count - 1 {
-                let afterKey = pageIdList[index + 1]
-                
-                return self.getViewController(afterKey)
-                
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        child.didMove(toParent: parent)
+        return pageController
+    }()
+    open var currentIdentifier:String? {
+        get {
+            guard let viewController = self.pageController.viewControllers?.first,let identifier = self.getIdentifier(of: viewController) else {
+                return nil
             }
-            return nil
-        }
-        
-        func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-            var fromIdentifier = ""
-            for identifier in self.pageIdList {
-                if self.viewControllers[identifier] == previousViewControllers.first {
-                    fromIdentifier = identifier
-                }
-                
-            }
-            guard let currentIdentifier = currentIdentifier ,fromIdentifier != currentIdentifier else {
-                return
-            }
-            self.onGoto(from: fromIdentifier, to: self.currentIdentifier ?? "")
+            return identifier
         }
     }
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    func getIdentifier(of viewController:UIViewController) -> String? {
+        if let entry = self.viewControllers.first(where: { (arg) -> Bool in
+            
+            let (_, v) = arg
+            return v == viewController
+        }) {
+            return entry.key
+        }
+        return nil
+    }
+    open func gotoViewController(_ identifier:String) {
+        guard let gotoIndex = self.pageIdList.firstIndex(of: identifier) else {
+            return
+        }
+        var direction = UIPageViewController.NavigationDirection.forward
+        var oldIdentifier = ""
+        if let currentIdentifier = self.currentIdentifier ,let currentIndex = self.pageIdList.firstIndex(of: currentIdentifier) {
+            oldIdentifier = currentIdentifier
+            if gotoIndex > currentIndex {
+                direction = UIPageViewController.NavigationDirection.forward
+            }
+            else if gotoIndex < currentIndex {
+                direction = UIPageViewController.NavigationDirection.reverse
+            }
+            else {
+                return
+            }
+        }
+        let viewController = self.getViewController(identifier)
+        
+        self.pageController.setViewControllers([viewController], direction: direction, animated: true, completion:{
+            finished in
+            self.onGoto(from: oldIdentifier, to: identifier)
+        })
+    }
+    open func onGoto(from oldIdentifier:String,to identifier:String) {
+        
+    }
+    open func initial(_ viewController:UIViewController, identifier:String) {
+        
+    }
+    open func createViewControler(_ identifier:String) -> UIViewController {
+        return (storyboard?.instantiateViewController(withIdentifier: identifier))!
+    
+    }
+    open func getViewController(_ identifier:String) -> UIViewController{
+        if let vc = self.viewControllers[identifier] {
+            return vc
+        }
+        let viewController = createViewControler(identifier)
+        self.initial(viewController,identifier: identifier)
+        
+        self.viewControllers[identifier] = viewController
+        return viewController
+    }
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+extension IPaPageContainerViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSource
+{
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        if let currentIdentifier = self.currentIdentifier ,let index = self.pageIdList.firstIndex(of: currentIdentifier) ,index > 0 {
+            let afterKey = pageIdList[index - 1]
+            
+            return self.getViewController(afterKey)
+            
+        }
+        return nil
+    }
+    
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        if let currentIdentifier = self.currentIdentifier ,let index = self.pageIdList.firstIndex(of: currentIdentifier) ,index < self.pageIdList.count - 1 {
+            let afterKey = pageIdList[index + 1]
+            
+            return self.getViewController(afterKey)
+            
+        }
+        return nil
+    }
+    
+    public func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        var fromIdentifier = ""
+        for identifier in self.pageIdList {
+            if self.viewControllers[identifier] == previousViewControllers.first {
+                fromIdentifier = identifier
+            }
+            
+        }
+        guard let currentIdentifier = currentIdentifier ,fromIdentifier != currentIdentifier else {
+            return
+        }
+        self.onGoto(from: fromIdentifier, to: self.currentIdentifier ?? "")
+    }
+}
 
