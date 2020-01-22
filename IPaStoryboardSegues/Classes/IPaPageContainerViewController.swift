@@ -7,9 +7,7 @@
 
 import UIKit
 
-open class IPaPageContainerViewController: UIViewController {
-    @IBOutlet var contentView:UIView!
-    var viewControllers: [String : UIViewController]! = [String:UIViewController]()
+open class IPaPageContainerViewController: IPaContainerBaseViewController {
     open var pageIdList = [String]()
     open lazy var pageController:UIPageViewController = {
         let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -21,10 +19,10 @@ open class IPaPageContainerViewController: UIViewController {
         self.addChild(child)
         child.view.translatesAutoresizingMaskIntoConstraints = false
         let viewsDict:[String:UIView] = ["childView": child.view]
-        contentView.addSubview(child.view)
+        containerView.addSubview(child.view)
         
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         child.didMove(toParent: parent)
         return pageController
     }()
@@ -41,18 +39,15 @@ open class IPaPageContainerViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    func getIdentifier(of viewController:UIViewController) -> String? {
-        if let entry = self.viewControllers.first(where: { (arg) -> Bool in
-            
-            let (_, v) = arg
-            return v == viewController
-        }) {
-            return entry.key
-        }
-        return nil
+    
+
+    open func gotoPage(_ identifier:String) {
+        let viewController:UIViewController = self.getViewController(identifier)
+        self.gotoViewController(identifier, destination: viewController)
+        
     }
-    open func gotoViewController(_ identifier:String) {
-        guard let gotoIndex = self.pageIdList.firstIndex(of: identifier) else {
+    open override func gotoViewController(_ identifier:String?,destination:UIViewController) {
+        guard let identifier = identifier,let gotoIndex = self.pageIdList.firstIndex(of: identifier) else {
             return
         }
         var direction = UIPageViewController.NavigationDirection.forward
@@ -69,9 +64,7 @@ open class IPaPageContainerViewController: UIViewController {
                 return
             }
         }
-        let viewController = self.getViewController(identifier)
-        
-        self.pageController.setViewControllers([viewController], direction: direction, animated: true, completion:{
+        self.pageController.setViewControllers([destination], direction: direction, animated: true, completion:{
             finished in
             self.onGoto(from: oldIdentifier, to: identifier)
         })
@@ -96,16 +89,20 @@ open class IPaPageContainerViewController: UIViewController {
         self.viewControllers[identifier] = viewController
         return viewController
     }
-
-    /*
+  
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if let identifier = segue.identifier {
+            self.initial(segue.destination, identifier: identifier)
+            self.viewControllers[identifier] = segue.destination
+            
+        }
     }
-    */
+    
 
 }
 extension IPaPageContainerViewController:UIPageViewControllerDelegate,UIPageViewControllerDataSource

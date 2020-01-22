@@ -17,7 +17,7 @@ open class IPaReplaceSegue: UIStoryboardSegue {
             }) {
                 var viewControllers:[UIViewController]
                 if index > 0 {
-                    viewControllers = Array(navigationController.viewControllers[0...index])
+                    viewControllers = Array(navigationController.viewControllers[0..<index])
                     viewControllers.append(self.destination)
                 }
                 else {

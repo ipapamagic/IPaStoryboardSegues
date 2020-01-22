@@ -7,34 +7,43 @@
 
 import UIKit
 
-open class IPaContainerViewController: UIViewController ,IPaViewContainerProtocol{
-    public var viewControllers: [String : UIViewController]! = [String:UIViewController]()
+open class IPaContainerViewController: IPaContainerBaseViewController{
     
     open var currentViewController: UIViewController?
-    
-    @IBOutlet public weak var containerView: UIView!
-    
     
     override open func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-    open func gotoView(_ identifier:String,viewController:UIViewController) {
-        if self.currentViewController == viewController {
+    open override func gotoViewController(_ identifier:String?,destination:UIViewController)
+    {
+        if self.currentViewController == destination {
             return
         }
-        let segue = IPaContainerGotoSegue(identifier: identifier, source: currentViewController ?? self, destination: viewController)
-        
-        segue.perform()
-    }
-    override open func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if let viewController = self.viewControllers[identifier] {
-            self.gotoView(identifier, viewController: viewController)
-            return false
+         
+         
+        if let leavingController = self.currentViewController {
+            leavingController.willMove(toParent: nil)
+            leavingController.view.removeFromSuperview()
+            leavingController.removeFromParent()
+               
         }
-        return true
+        if let identifier = identifier {
+            self.viewControllers[identifier] = destination
+        }
+        self.currentViewController = destination
+        
+        self.addChild(destination)
+        destination.view.translatesAutoresizingMaskIntoConstraints = false
+        let viewsDict:[String:UIView] = ["destView": destination.view]
+           
+        self.containerView.addSubview(destination.view)
+        self.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+        self.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
+           destination.didMove(toParent: self)
     }
+    
     /*
     // MARK: - Navigation
 

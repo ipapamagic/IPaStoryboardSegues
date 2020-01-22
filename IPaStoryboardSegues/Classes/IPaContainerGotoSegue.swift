@@ -7,9 +7,7 @@
 
 import UIKit
 public protocol IPaViewContainerProtocol  {
-    var currentViewController:UIViewController? {get set}
-    var containerView:UIView! {get set}
-    var viewControllers:[String:UIViewController]! {get set}
+    func gotoViewController(_ identifier:String?,destination:UIViewController)
 }
 
 open class IPaContainerGotoSegue: UIStoryboardSegue {
@@ -25,27 +23,9 @@ open class IPaContainerGotoSegue: UIStoryboardSegue {
     override open func perform()
     {
         let destination = self.destination
-        guard var source = baseViewController , source.currentViewController != destination else {
+        guard let baseViewController = baseViewController else {
             return
         }
-        if let leavingController = source.currentViewController {
-            leavingController.willMove(toParent: nil)
-            leavingController.view.removeFromSuperview()
-            leavingController.removeFromParent()
-            
-        }
-        if let identifier = identifier {
-            source.viewControllers[identifier] = destination
-        }
-        source.currentViewController = destination
-        source.addChild(destination)
-        destination.view.translatesAutoresizingMaskIntoConstraints = false
-        let viewsDict:[String:UIView] = ["destView": destination.view]
-        
-        source.containerView.addSubview(destination.view)
-        source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-        source.containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[destView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
-        destination.didMove(toParent: source)
-        
+        baseViewController.gotoViewController(self.identifier, destination: destination)
     }
 }

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'IPaStoryboardSegues'
-  s.version          = '2.7'
+  s.version          = '2.8'
   s.summary          = 'A short description of IPaStoryboardSegues.'
   s.swift_version    = '5.0'
 # This description is used to generate tags and improve search results.
@@ -27,7 +27,7 @@ TODO: Add long description of the pod here.
   s.author           = { 'ipapamagic@gmail.com' => 'ipapamagic@gmail.com' }
   s.source           = { :git => 'https://github.com/ipapamagic/IPaStoryboardSegues.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
+  s.swift_version = '5.1'
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'IPaStoryboardSegues/Classes/**/*'
