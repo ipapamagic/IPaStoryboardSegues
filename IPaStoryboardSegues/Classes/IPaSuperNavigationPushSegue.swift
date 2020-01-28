@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IPaSuperNavigationPushSegue: UIStoryboardSegue {
+open class IPaSuperNavigationPushSegue: UIStoryboardSegue {
     override open func perform() {
         var navigationController:UINavigationController? = self.source.navigationController
         var viewController = self.source
