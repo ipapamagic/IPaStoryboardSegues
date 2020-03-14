@@ -16,6 +16,14 @@ open class IPaContainerViewController: IPaContainerBaseViewController{
 
         // Do any additional setup after loading the view.
     }
+    open func gotoViewController(_ identifier:String) {
+        if let viewController = self.viewControllers[identifier] {
+            self.gotoViewController(identifier, destination: viewController)
+        }
+        else {
+            self.performSegue(withIdentifier: identifier, sender: nil)
+        }
+    }
     open override func gotoViewController(_ identifier:String?,destination:UIViewController)
     {
         if self.currentViewController == destination {

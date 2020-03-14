@@ -11,7 +11,7 @@ open class IPaContainerBaseViewController: UIViewController ,IPaViewContainerPro
     public var viewControllers: [String : UIViewController]! = [String:UIViewController]()
     
     @IBOutlet public weak var containerView: UIView!
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
