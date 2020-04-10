@@ -72,7 +72,7 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
     open func onGoto(from oldIdentifier:String,to identifier:String) {
         
     }
-    open func initial(_ viewController:UIViewController, identifier:String) {
+    open func prepare(page viewController:UIViewController, identifier:String) {
         
     }
     open func createViewControler(_ identifier:String) -> UIViewController {
@@ -84,7 +84,7 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
             return vc
         }
         let viewController = createViewControler(identifier)
-        self.initial(viewController,identifier: identifier)
+        self.prepare(page:viewController,identifier: identifier)
         
         self.viewControllers[identifier] = viewController
         return viewController
@@ -93,15 +93,15 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if let identifier = segue.identifier {
-            self.initial(segue.destination, identifier: identifier)
-            self.viewControllers[identifier] = segue.destination
-            
-        }
-    }
+//        if let identifier = segue.identifier {
+//            self.initial(segue.destination, identifier: identifier)
+//            self.viewControllers[identifier] = segue.destination
+//
+//        }
+//    }
     
 
 }
