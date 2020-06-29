@@ -64,6 +64,7 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
                 return
             }
         }
+        self.viewControllers[identifier] = destination
         self.pageController.setViewControllers([destination], direction: direction, animated: true, completion:{
             finished in
             self.onGoto(from: oldIdentifier, to: identifier)
