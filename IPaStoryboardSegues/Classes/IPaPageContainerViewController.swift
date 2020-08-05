@@ -9,7 +9,21 @@ import UIKit
 
 open class IPaPageContainerViewController: IPaContainerBaseViewController {
     open var pageIdList = [String]()
-    open lazy var pageController:UIPageViewController = {
+    open var pageController:UIPageViewController?
+    open var currentIdentifier:String? {
+        get {
+            guard let viewController = self.pageController?.viewControllers?.first,let identifier = self.getIdentifier(of: viewController) else {
+                return nil
+            }
+            return identifier
+        }
+    }
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        self.initialPageController()
+        // Do any additional setup after loading the view.
+    }
+    fileprivate func initialPageController() {
         let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageController.delegate = self
         pageController.dataSource = self
@@ -24,22 +38,8 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
         containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[childView]|",options:NSLayoutConstraint.FormatOptions(rawValue: 0),metrics:nil,views:viewsDict))
         child.didMove(toParent: parent)
-        return pageController
-    }()
-    open var currentIdentifier:String? {
-        get {
-            guard let viewController = self.pageController.viewControllers?.first,let identifier = self.getIdentifier(of: viewController) else {
-                return nil
-            }
-            return identifier
-        }
+        self.pageController = pageController
     }
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
 
     open func gotoPage(_ identifier:String) {
         let viewController:UIViewController = self.getViewController(identifier)
@@ -65,7 +65,7 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
             }
         }
         self.viewControllers[identifier] = destination
-        self.pageController.setViewControllers([destination], direction: direction, animated: true, completion:{
+        self.pageController?.setViewControllers([destination], direction: direction, animated: true, completion:{
             finished in
             self.onGoto(from: oldIdentifier, to: identifier)
         })
