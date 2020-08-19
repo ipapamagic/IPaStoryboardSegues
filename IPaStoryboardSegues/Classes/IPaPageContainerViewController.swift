@@ -94,15 +94,11 @@ open class IPaPageContainerViewController: IPaContainerBaseViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-//        if let identifier = segue.identifier {
-//            self.initial(segue.destination, identifier: identifier)
-//            self.viewControllers[identifier] = segue.destination
-//
-//        }
-//    }
+    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier {
+            self.prepare(page: segue.destination, identifier: identifier)
+        }
+    }
     
 
 }
