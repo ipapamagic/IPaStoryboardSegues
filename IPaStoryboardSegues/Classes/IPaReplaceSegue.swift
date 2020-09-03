@@ -7,13 +7,19 @@
 //
 
 import UIKit
-
+public protocol IPaReplaceSourceWithTarget {
+    var replaceTarget:UIViewController { get }
+}
 open class IPaReplaceSegue: UIStoryboardSegue {
     override open func perform() {
         if let navigationController = self.source.navigationController {
+            var replaceTarget = self.source
+            if let replaceSource = self.source as? IPaReplaceSourceWithTarget {
+                replaceTarget = replaceSource.replaceTarget
+            }
             if let index = navigationController.viewControllers.firstIndex(where: {
                 viewController in
-                return (viewController == self.source)
+                return (viewController == replaceTarget)
             }) {
                 var viewControllers:[UIViewController]
                 if index > 0 {
