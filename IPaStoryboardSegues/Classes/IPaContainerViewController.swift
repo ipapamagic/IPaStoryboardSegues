@@ -16,14 +16,17 @@ open class IPaContainerViewController: IPaContainerBaseViewController{
 
         // Do any additional setup after loading the view.
     }
-    open func gotoViewController(_ identifier:String) {
+    open func gotoViewController(_ identifier:String,sender:Any? = nil) {
         if let viewController = self.viewControllers[identifier] {
-            self.gotoViewController(identifier, destination: viewController)
+            let segue = IPaContainerGotoSegue(identifier: identifier, source: self, destination: viewController)
+            self.prepare(for: segue, sender: sender)
+            segue.perform()
         }
         else {
-            self.performSegue(withIdentifier: identifier, sender: nil)
+            self.performSegue(withIdentifier: identifier, sender: sender)
         }
     }
+    
     open override func gotoViewController(_ identifier:String?,destination:UIViewController)
     {
         if self.currentViewController == destination {
@@ -52,13 +55,14 @@ open class IPaContainerViewController: IPaContainerBaseViewController{
            destination.didMove(toParent: self)
     }
     
-    /*
+    
     // MARK: - Navigation
-
+    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+      
     }
     */
 
