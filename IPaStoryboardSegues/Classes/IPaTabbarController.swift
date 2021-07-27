@@ -12,7 +12,7 @@ public protocol IPaTabbarItem:UIView
     var isSelected:Bool {get set}
     func addTargetForTap(_ target: Any?, action: Selector)
 }
-extension IPaDesignableButton:IPaTabbarItem
+extension UIButton:IPaTabbarItem
 {
     public func addTargetForTap(_ target: Any?, action: Selector) {
         self.addTarget(target, action: action, for: .touchUpInside)
