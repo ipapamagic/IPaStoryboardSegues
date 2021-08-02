@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import IPaDesignableUI
+
 public protocol IPaTabbarItem:UIView
 {
     var isSelected:Bool {get set}
