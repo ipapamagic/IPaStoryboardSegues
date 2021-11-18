@@ -10,7 +10,7 @@ import UIKit
 open class IPaContainerBaseViewController: UIViewController ,IPaViewContainerProtocol{
     public var viewControllers: [String : UIViewController]! = [String:UIViewController]()
     
-    @IBOutlet public weak var containerView: UIView!
+    @IBOutlet open weak var containerView: UIView!
     override open func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +24,7 @@ open class IPaContainerBaseViewController: UIViewController ,IPaViewContainerPro
         }
         return true
     }
-    func getIdentifier(of viewController:UIViewController) -> String? {
+    open func getIdentifier(of viewController:UIViewController) -> String? {
         if let entry = self.viewControllers.first(where: { (arg) -> Bool in
             
             let (_, v) = arg
